@@ -1,3 +1,4 @@
 deb
 out
 .flatpak-builder
+local
