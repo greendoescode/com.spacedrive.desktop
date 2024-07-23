@@ -5,7 +5,7 @@ sdk: org.gnome.Sdk
 
 command: /app/bin/spacedrive
 finish-args:
-  - --env=LD_LIBRARY_PATH=/app/lib/spacedrive
+  - --env=LD_LIBRARY_PATH=/app/lib/spacedrive:/usr/lib
   - --socket=wayland
   - --socket=fallback-x11
   - --device=dri
@@ -19,6 +19,16 @@ finish-args:
   - --filesystem=/mnt
 
 modules:
+  - name: xdotool
+    buildsystem: simple
+    sources:
+      - type: git
+        url: https://github.com/jordansissel/xdotool.git
+    depends: glibc
+    build-commands:
+      - make
+      - make install PREFIX=/app/lib/spacedrive
+
   - shared-modules/dbus-glib/dbus-glib.json
   - name: binary
     buildsystem: simple
@@ -27,9 +37,6 @@ modules:
         url: https://raw.githubusercontent.com/greendoescode/com.spacedrive.desktop/new-pr/files/97Db046C.deb
         sha256: 07b050f0c90c3f3808856875fa497faaa1949c9027ced63ae046925318f526f6
         only-arches: [x86_64]
-      - type: archive
-        url: https://raw.githubusercontent.com/greendoescode/com.spacedrive.desktop/new-pr/files/Ca70856d.tar.gz
-        sha256: cfa369b4c2c61b3931d1c3fb83dfbc6330c3ba55a9b63109e9f96d55714571bb
 
     build-commands:
       - ar -x *.deb
@@ -43,7 +50,8 @@ modules:
       - mkdir -p /app/share/icons/hicolor/256x256/apps
       - mkdir -p /app/share/man/man1/
       - mkdir -p /app/share/spacedrive/models
-      - cp *.so* usr/lib/spacedrive
+      - cp /app/lib/spacedrive/lib/*.so* /app/lib/spacedrive
+      - cp /app/lib/*.so* /app/lib/spacedrive
       - install -Dm644 usr/lib/spacedrive/* /app/lib/spacedrive
       - install -Dm755 usr/bin/* /app/bin
       - install -Dm644 usr/share/man/man1/* /app/share/man/man1/

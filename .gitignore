@@ -2,3 +2,4 @@ deb
 out
 .flatpak-builder
 local
+com.spacedrive.Desktop.flatpak
