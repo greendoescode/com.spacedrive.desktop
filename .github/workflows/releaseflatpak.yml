@@ -106,13 +106,10 @@ jobs:
           EOF
           
       - name: Build Flatpak
-        run: |
-          flatpak-builder ./out \
-            ./com.spacedrive.Desktop.yml
+        run: flatpak-builder --repo=local -v ./out ./com.spacedrive.Desktop.yml
             
       - name: Build Flatpak Bundle
-        run: |
-          flatpak build-bundle local com.spacedrive.Desktop.flatpak com.spacedrive.Desktop
+        run: flatpak build-bundle local com.spacedrive.Desktop.flatpak com.spacedrive.Desktop
           
   release:
     if: startsWith(github.ref, 'refs/tags/')
