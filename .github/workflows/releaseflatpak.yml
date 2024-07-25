@@ -1,0 +1,133 @@
+name: Flatpak Release
+
+on:
+  pull_request:
+    paths:
+      - '.github/workflows/flatpakci.yml'
+  workflow_dispatch:
+
+env:
+  CARGO_INCREMENTAL: 0
+  CARGO_NET_RETRY: 10
+  RUSTUP_MAX_RETRIES: 10
+
+jobs:
+  build:
+    name: Build Tauri and Flatpak
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Setup System and Rust
+        uses: ./.github/actions/setup-system
+        with:
+          token: ${{ secrets.CSM_GITHUB_TOKEN }}
+          target: x86_64-unknown-linux-gnu
+
+      - name: Install FlatPak dependencies
+        run: |
+          df -h
+          sudo apt-get update
+          sudo apt-get install -y libgtk-3-dev webkit2gtk-4.0 librsvg2-dev patchelf flatpak flatpak-builder
+          flatpak remote-add --user --if-not-exists flathub https://flathub.org/repo/flathub.flatpakrepo
+          flatpak install -y runtime/org.gnome.Platform/x86_64/46 runtime/org.gnome.Sdk/x86_64/46
+          flatpak --version
+          flatpak-builder --version
+          ls
+          
+      - name: Create Flatpak Manifest
+        run: |
+          cat << EOF > ./com.spacedrive.Desktop.yml
+          id: com.spacedrive.Desktop
+          runtime: org.gnome.Platform
+          runtime-version: '46'
+          sdk: org.gnome.Sdk
+          
+          command: /app/bin/spacedrive
+          finish-args:
+            - --env=LD_LIBRARY_PATH=/app/lib/spacedrive:/usr/lib
+            - --socket=wayland
+            - --socket=fallback-x11
+            - --device=dri
+            - --allow=bluetooth
+            - --share=ipc
+            - --share=network
+            - --socket=pulseaudio
+            - --socket=cups
+            - --device=dri
+            - --filesystem=host
+            - --filesystem=/mnt
+          
+          modules:
+            - name: xdotool
+              buildsystem: simple
+              sources:
+                - type: git
+                  url: https://github.com/jordansissel/xdotool.git
+              depends: glibc
+              build-commands:
+                - make
+                - make install PREFIX=/app/lib/spacedrive
+          
+            - shared-modules/dbus-glib/dbus-glib.json
+            - name: binary
+              buildsystem: simple
+              sources:
+                - type: file
+                  url: https://raw.githubusercontent.com/greendoescode/com.spacedrive.desktop/new-pr/files/97Db046C.deb
+                  sha256: 07b050f0c90c3f3808856875fa497faaa1949c9027ced63ae046925318f526f6
+                  only-arches: [x86_64]
+          
+              build-commands:
+                - ar -x *.deb
+                - tar -xf data.tar.xz
+                - mkdir -p /app/bin
+                - mkdir -p /app/lib/spacedrive
+                - mkdir -p /app/share/applications
+                - mkdir -p /app/share/doc/spacedrive
+                - mkdir -p /app/share/icons/hicolor/32x32/apps
+                - mkdir -p /app/share/icons/hicolor/128x128/apps
+                - mkdir -p /app/share/icons/hicolor/256x256/apps
+                - mkdir -p /app/share/man/man1/
+                - mkdir -p /app/share/spacedrive/models
+                - cp /app/lib/spacedrive/lib/*.so* /app/lib/spacedrive
+                - cp /app/lib/*.so* /app/lib/spacedrive
+                - install -Dm644 usr/lib/spacedrive/* /app/lib/spacedrive
+                - install -Dm755 usr/bin/* /app/bin
+                - install -Dm644 usr/share/man/man1/* /app/share/man/man1/
+                - install -Dm644 usr/share/icons/hicolor/128x128/apps/spacedrive.png /app/share/icons/hicolor/128x128/apps/com.spacedrive.Desktop.png
+                - install -Dm644 usr/share/icons/hicolor/32x32/apps/spacedrive.png /app/share/icons/hicolor/32x32/apps/com.spacedrive.Desktop.png
+                - install -Dm644 usr/share/icons/hicolor/256x256@2/apps/spacedrive.png /app/share/icons/hicolor/256x256/apps/com.spacedrive.Desktop.png
+                - install -Dm644 usr/share/doc/spacedrive/* /app/share/doc/spacedrive
+                - install -Dm644 usr/share/applications/spacedrive.desktop /app/share/applications/com.spacedrive.Desktop.desktop
+                - install -Dm644 usr/share/spacedrive/models/* /app/share/spacedrive/models
+                - install -Dm644 usr/com.spacedrive.Desktop.metainfo.xml /app/share/metainfo/com.spacedrive.Desktop.metainfo.xml
+          EOF
+          
+      - name: Build Flatpak
+        run: |
+          flatpak-builder ./out \
+            ./manifest.json
+            
+      - name: Build Flatpak Bundle
+        run: |
+          flatpak build-bundle local com.spacedrive.Desktop.flatpak com.spacedrive.Desktop
+          
+  release:
+    if: startsWith(github.ref, 'refs/tags/')
+    runs-on: ubuntu-latest
+    name: Create Release
+    needs: build
+    permissions:
+      contents: write
+    steps:
+      - name: Download artifacts
+        uses: actions/download-artifact@v4
+
+      - name: Create Release
+        # TODO: Change to stable version when available
+        uses: softprops/action-gh-release@4634c16e79c963813287e889244c50009e7f0981
+        with:
+          draft: true
+          file: './com.spacedrive.Desktop.flatpak'
