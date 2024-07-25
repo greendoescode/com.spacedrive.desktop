@@ -30,7 +30,8 @@ jobs:
       - name: Clone Spacedrive to Working DIR
         run: |
           git clone https://github.com/spacedriveapp/spacedrive spacedrive
-          mv spacedrive/* spacedrive/.* ./
+          mv spacedrive/* ./
+          mv spacedrive/.github ./
           rm -rf spacedrive
           ls ./
         
