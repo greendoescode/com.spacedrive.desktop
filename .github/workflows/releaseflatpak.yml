@@ -39,6 +39,9 @@ jobs:
           branch: 'main'
           owner: 'spacedriveapp'
           repository: 'spacedrive'
+          
+      - name: CD Spacedrive
+        run: cd spacedrive
 
       - name: Setup Node.js and pnpm
         uses: ./spacedrive/.github/actions/setup-pnpm
