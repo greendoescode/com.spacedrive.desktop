@@ -30,8 +30,8 @@ jobs:
       - name: Clone Spacedrive
         run: git clone https://github.com/spacedriveapp/spacedrive
 
-      - name: Copy Spacedrive to Working DIR
-        run: cp -r spacedrive/* ./ 
+      - name: Move Spacedrive to Working DIR
+        run: mv spacedrive/* ./ 
       
       - name: Setup Node.js and pnpm
         uses: ./.github/actions/setup-pnpm
