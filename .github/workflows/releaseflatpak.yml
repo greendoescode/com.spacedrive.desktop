@@ -21,7 +21,10 @@ jobs:
         uses: actions/checkout@v4
         with:
           ref: new-pr
-
+          
+      - name: Add Submodules
+        run: git submodule add https://github.com/flathub/shared-modules.git
+        
       - name: Install FlatPak dependencies
         run: |
           df -h
@@ -32,7 +35,7 @@ jobs:
           flatpak --version
           flatpak-builder --version
           ls
-          
+        
       - name: Create Flatpak Manifest
         run: |
           cat << EOF > ./com.spacedrive.Desktop.yml
