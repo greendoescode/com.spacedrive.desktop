@@ -128,8 +128,7 @@ jobs:
         uses: actions/download-artifact@v4
 
       - name: Create Release
-        # TODO: Change to stable version when available
-        uses: softprops/action-gh-release@4634c16e79c963813287e889244c50009e7f0981
+        uses: softprops/action-gh-release@v2
         with:
           draft: true
           file: './com.spacedrive.Desktop.flatpak'
