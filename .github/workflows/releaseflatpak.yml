@@ -50,7 +50,7 @@ jobs:
       - name: Keep build safe
         run: |
           mkdir -p .safefiles
-          mv ./target/release/bundle/deb/Spacedrive-linux-x86_64.deb .safefiles
+          mv ./target/release/bundle/deb/Spacedrive_0.4.0_amd64.deb .safefiles
         
       - name: Checkout repository
         uses: actions/checkout@v4
