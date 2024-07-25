@@ -40,15 +40,15 @@ jobs:
           owner: 'spacedriveapp'
           repository: 'spacedrive'
 
+      - name: CD Spacedrive
+        run: cd spacedrive
+      
       - name: Setup Node.js and pnpm
         uses: ./.github/actions/setup-pnpm
-        with:
-          working-directory: ./spacedrive
 
       - name: Setup System and Rust
         uses: ./.github/actions/setup-system
         with:
-          working-directory: ./spacedrive
           target: x86_64-unknown-linux-gnu
           
       - name: Build Tauri
