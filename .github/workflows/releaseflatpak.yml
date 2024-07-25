@@ -131,4 +131,4 @@ jobs:
         uses: softprops/action-gh-release@v2
         with:
           draft: true
-          file: './com.spacedrive.Desktop.flatpak'
+          files: './com.spacedrive.Desktop.flatpak'
