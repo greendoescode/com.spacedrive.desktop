@@ -39,21 +39,17 @@ jobs:
           branch: 'main'
           owner: 'spacedriveapp'
           repository: 'spacedrive'
-          
-      - name: CD Spacedrive
-        run: cd spacedrive
 
       - name: Setup Node.js and pnpm
-        uses: ./spacedrive/.github/actions/setup-pnpm
+        uses: ./.github/actions/setup-pnpm
 
       - name: Setup System and Rust
-        uses: ./spacedrive/.github/actions/setup-system
+        uses: ./.github/actions/setup-system
         with:
           target: x86_64-unknown-linux-gnu
           
       - name: Build Tauri
         run: |
-          cd spacedrive
           pnpm tauri build --ci -v --target x86_64-unknown-linux-gnu --bundles deb
       
       - name: Add Submodules
