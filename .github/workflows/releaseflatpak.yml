@@ -76,7 +76,7 @@ jobs:
       - name: Checkout repository
         uses: actions/checkout@v4
         with:
-          ref: new-p
+          ref: new-pr
 
       - name: Download artifacts
         uses: actions/download-artifact@v4
