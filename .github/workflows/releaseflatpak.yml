@@ -105,7 +105,7 @@ jobs:
       - name: Build Flatpak
         run: |
           flatpak-builder ./out \
-            ./manifest.json
+            ./com.spacedrive.Desktop.yml
             
       - name: Build Flatpak Bundle
         run: |
