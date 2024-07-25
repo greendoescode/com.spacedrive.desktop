@@ -27,32 +27,24 @@ jobs:
           remove-haskell: 'true'
           remove-docker-images: 'true'
           
+      - name: Clone Spacedrive
+        run: git clone https://github.com/spacedriveapp/spacedrive
+      
+      - name: Setup Node.js and pnpm
+        uses: ./.github/actions/setup-pnpm
+
+      - name: Setup System and Rust
+        uses: ./.github/actions/setup-system
+        with:
+          target: x86_64-unknown-linux-gnu
+
       - name: Checkout repository
         uses: actions/checkout@v4
         with:
           ref: new-pr
       
-      - name: Clone Spacedrive
-        uses: GuillaumeFalourd/clone-github-repo-action@v2.1
-        with:
-          depth: 1
-          branch: 'main'
-          owner: 'greendoescode'
-          repository: 'spacedrive'
-
-      - name: CD Spacedrive
-        run: cd spacedrive
-      
-      - name: Setup Node.js and pnpm
-        uses: ./spacedrive/.github/actions/setup-pnpm
-
-      - name: Setup System and Rust
-        uses: ./spacedrive/.github/actions/setup-system
-        with:
-          target: x86_64-unknown-linux-gnu
           
       - name: Build Tauri
-        working-directory: ./spacedrive
         run: pnpm tauri build --ci -v --target x86_64-unknown-linux-gnu --bundles deb
       
       - name: Add Submodules
@@ -108,7 +100,7 @@ jobs:
               buildsystem: simple
               sources:
                 - type: file
-                  path: ./spacedrive/target/release/bundle/deb/Spacedrive-linux-x86_64.deb
+                  path: ./target/release/bundle/deb/Spacedrive-linux-x86_64.deb
                   only-arches: [x86_64]
           
               build-commands:
