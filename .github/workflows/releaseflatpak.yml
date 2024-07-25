@@ -22,12 +22,6 @@ jobs:
         with:
           ref: new-pr
 
-      - name: Setup System and Rust
-        uses: ./.github/actions/setup-system
-        with:
-          token: ${{ secrets.CSM_GITHUB_TOKEN }}
-          target: x86_64-unknown-linux-gnu
-
       - name: Install FlatPak dependencies
         run: |
           df -h
