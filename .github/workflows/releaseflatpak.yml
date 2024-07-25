@@ -32,7 +32,6 @@ jobs:
           git init
           git remote add origin https://github.com/spacedriveapp/spacedrive
           git fetch
-          git reset origin/master
           git checkout -t origin/master
       
       - name: Setup Node.js and pnpm
