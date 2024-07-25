@@ -28,7 +28,7 @@ jobs:
           remove-docker-images: 'true'
           
       - name: Clone Spacedrive
-        run: git clone https://github.com/spacedriveapp/spacedrive
+        run: git clone https://github.com/spacedriveapp/spacedrive .
       
       - name: Setup Node.js and pnpm
         uses: ./.github/actions/setup-pnpm
