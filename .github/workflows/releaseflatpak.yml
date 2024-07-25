@@ -67,7 +67,7 @@ jobs:
         uses: actions/upload-artifact@v3
         with:
           name: build.deb
-          path: ./Spacedrive_${{ steps.extract-version.outputs.version }}_amd64.deb
+          path: ./target/release/bundle/deb/Spacedrive_${{ steps.extract-version.outputs.version }}_amd64.deb
           
   flatpak-build:
     runs-on: ubuntu-22.04
