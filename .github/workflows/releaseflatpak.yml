@@ -27,14 +27,12 @@ jobs:
           remove-haskell: 'true'
           remove-docker-images: 'true'
           
-      - name: Clone Spacedrive
-        run: git clone https://github.com/spacedriveapp/spacedrive
-
-      - name: Move Spacedrive to Working DIR
+      - name: Clone Spacedrive to Working DIR
         run: |
-          mv spacedrive/* /home/runner/work/com.spacedrive.desktop/com.spacedrive.desktop/ 
+          git clone https://github.com/spacedriveapp/spacedrive spacedrive
+          mv spacedrive/* spacedrive/.* ./
+          rm -rf spacedrive
           ls ./
-          ls ./spacedrive
         
       - name: Setup Node.js and pnpm
         uses: ./.github/actions/setup-pnpm
