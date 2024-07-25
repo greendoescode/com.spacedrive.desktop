@@ -13,7 +13,7 @@ env:
 
 jobs:
   build:
-    name: Build Flatpak
+    name: Build Tauri
     runs-on: ubuntu-22.04
 
     steps:
@@ -35,7 +35,7 @@ jobs:
           mv spacedrive/.[!.]* ./
           rm -rf spacedrive
           ls ./
-        
+
       - name: Setup Node.js and pnpm
         uses: ./.github/actions/setup-pnpm
 
@@ -43,22 +43,43 @@ jobs:
         uses: ./.github/actions/setup-system
         with:
           target: x86_64-unknown-linux-gnu
+
+      - name: Get cargo pkgid output
+        id: cargo-pkgid
+        run: echo "::set-output name=pkgid::$(cargo pkgid --manifest-path E:/Documents/VSCODE/spacedrive/core/Cargo.toml)"
+
+      - name: Extract version
+        id: extract-version
+        run: |
+          PKGID="${{ steps.cargo-pkgid.outputs.pkgid }}"
+          VERSION=$(echo $PKGID | grep -oP '(?<=@)[^#]+$')
+          echo "::set-output name=version::$VERSION"
+
+      - name: Use version
+        run: echo "The version is ${{ steps.extract-version.outputs.version }}"
           
       - name: Build Tauri
         run: pnpm tauri build --ci -v --target x86_64-unknown-linux-gnu --bundles deb
-
-      - name: Keep build safe
-        run: |
-          mkdir .safefiles
-          tree target
-          ls
-          mv target/release/* ./.safefiles
-        
+      
+      - name: Upload Tauri Build
+        uses: actions/upload-artifact@v3
+        with:
+          name: build.deb
+          path: ./target/release/bundle/deb/Spacedrive_ ${{ steps.extract-version.outputs.version }}_amd64.deb
+          
+  flatpak-build:
+    runs-on: ubuntu-22.04
+    needs: build
+    name: Flatpak Build
+    steps:
+  
       - name: Checkout repository
         uses: actions/checkout@v4
         with:
-          ref: new-pr
-      
+          ref: new-p
+
+      - name: Download artifacts
+        uses: actions/download-artifact@v4
       
       - name: Add Submodules
         run: git submodule add https://github.com/flathub/shared-modules.git
@@ -113,7 +134,7 @@ jobs:
               buildsystem: simple
               sources:
                 - type: file
-                  path: .safefiles/target/release/bundle/deb/Spacedrive-linux-x86_64.deb
+                  path: build.deb
                   only-arches: [x86_64]
           
               build-commands:
