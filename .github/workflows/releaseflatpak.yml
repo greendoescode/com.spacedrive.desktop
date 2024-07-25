@@ -32,7 +32,7 @@ jobs:
           git clone https://github.com/spacedriveapp/spacedrive spacedrive
           mv spacedrive/* ./
           mv spacedrive/.github ./
-          mv spacedrive/.* ./
+          mv spacedrive/.[!.]* ./
           rm -rf spacedrive
           ls ./
         
