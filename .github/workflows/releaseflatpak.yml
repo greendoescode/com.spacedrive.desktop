@@ -46,7 +46,7 @@ jobs:
 
       - name: Get cargo pkgid output
         id: cargo-pkgid
-        run: echo "::set-output name=pkgid::$(cargo pkgid --manifest-path E:/Documents/VSCODE/spacedrive/core/Cargo.toml)"
+        run: echo "::set-output name=pkgid::$(cargo pkgid --manifest-path ./core/Cargo.toml)"
 
       - name: Extract version
         id: extract-version
