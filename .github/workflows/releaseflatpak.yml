@@ -29,10 +29,8 @@ jobs:
           
       - name: Clone Spacedrive
         run: |
-          git init
-          git remote add origin https://github.com/spacedriveapp/spacedrive
-          git fetch
-          git checkout -t origin/master
+          git clone https://github.com/spacedriveapp/spacedrive
+          cp -r spacedrive/* ./ 
       
       - name: Setup Node.js and pnpm
         uses: ./.github/actions/setup-pnpm
