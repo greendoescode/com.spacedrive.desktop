@@ -110,6 +110,12 @@ jobs:
             
       - name: Build Flatpak Bundle
         run: flatpak build-bundle local com.spacedrive.Desktop.flatpak com.spacedrive.Desktop
+
+      - name: Upload Flatpak Bundle
+        uses: actions/upload-artifact@v3
+        with:
+          name: com.spacedrive.Desktop.flatpak
+          path: ./com.spacedrive.Desktop.flatpak
           
   release:
     runs-on: ubuntu-latest
