@@ -37,7 +37,7 @@ jobs:
         with:
           depth: 1
           branch: 'main'
-          owner: 'spacedriveapp'
+          owner: 'greendoescode'
           repository: 'spacedrive'
 
       - name: CD Spacedrive
