@@ -17,11 +17,42 @@ jobs:
     runs-on: ubuntu-22.04
 
     steps:
+      - name: Maximize build space
+        uses: easimon/maximize-build-space@master
+        with:
+          swap-size-mb: 3072
+          root-reserve-mb: 6144
+          remove-dotnet: 'true'
+          remove-codeql: 'true'
+          remove-haskell: 'true'
+          remove-docker-images: 'true'
+          
       - name: Checkout repository
         uses: actions/checkout@v4
         with:
           ref: new-pr
+      
+      - name: Clone Spacedrive
+        uses: GuillaumeFalourd/clone-github-repo-action@v2.1
+        with:
+          depth: 1
+          branch: 'main'
+          owner: 'spacedriveapp'
+          repository: 'spacedrive'
+
+      - name: Setup Node.js and pnpm
+        uses: ./spacedrive/.github/actions/setup-pnpm
+
+      - name: Setup System and Rust
+        uses: ./spacedrive/.github/actions/setup-system
+        with:
+          target: x86_64-unknown-linux-gnu
           
+      - name: Build Tauri
+        run: |
+          cd spacedrive
+          pnpm tauri build --ci -v --target x86_64-unknown-linux-gnu --bundles deb
+      
       - name: Add Submodules
         run: git submodule add https://github.com/flathub/shared-modules.git
         
@@ -75,13 +106,13 @@ jobs:
               buildsystem: simple
               sources:
                 - type: file
-                  url: https://raw.githubusercontent.com/greendoescode/com.spacedrive.desktop/new-pr/files/97Db046C.deb
-                  sha256: 07b050f0c90c3f3808856875fa497faaa1949c9027ced63ae046925318f526f6
+                  path: ./spacedrive/target/release/bundle/deb/Spacedrive-linux-x86_64.deb
                   only-arches: [x86_64]
           
               build-commands:
                 - ar -x *.deb
                 - tar -xf data.tar.xz
+                - sed -i 's/Icon=sd-desktop/Icon=com.spacedrive.Desktop/' usr/share/applications/spacedrive.desktop
                 - mkdir -p /app/bin
                 - mkdir -p /app/lib/spacedrive
                 - mkdir -p /app/share/applications
