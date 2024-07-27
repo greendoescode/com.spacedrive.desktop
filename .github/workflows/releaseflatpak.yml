@@ -85,8 +85,6 @@ jobs:
 
       - name: Download artifacts
         uses: actions/download-artifact@v4
-        with:
-          name: build.deb
       
       - name: Add Submodules
         run: git submodule add https://github.com/flathub/shared-modules.git
