@@ -61,6 +61,14 @@ jobs:
       - name: Build Tauri
         run:  |
           pnpm tauri build --ci -v --target x86_64-unknown-linux-gnu --bundles deb
+
+      - name: Publish Artifacts
+        uses: ./.github/actions/publish-artifacts
+        with:
+          os: linux
+          arch: x86_64
+          target: x86_64-unknown-linux-gnu
+          profile: release
       
       - name: Upload Tauri Build
         uses: actions/upload-artifact@v3
@@ -139,7 +147,7 @@ jobs:
               buildsystem: simple
               sources:
                 - type: file
-                  path: build.deb
+                  path: ./Spacedrive-linux-x86_64.deb 
                   only-arches: [x86_64]
           
               build-commands:
