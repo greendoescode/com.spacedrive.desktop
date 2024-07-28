@@ -2,63 +2,60 @@ id: com.spacedrive.Desktop
 runtime: org.gnome.Platform
 runtime-version: '46'
 sdk: org.gnome.Sdk
-
 command: /app/bin/spacedrive
 finish-args:
-  - --env=LD_LIBRARY_PATH=/app/lib/spacedrive:/usr/lib
-  - --socket=wayland
-  - --socket=fallback-x11
-  - --device=dri
-  - --allow=bluetooth
-  - --share=ipc
-  - --share=network
-  - --socket=pulseaudio
-  - --socket=cups
-  - --device=dri
-  - --filesystem=host
-  - --filesystem=/mnt
-
+  - '--env=LD_LIBRARY_PATH=/app/lib/spacedrive:/usr/lib'
+  - '--socket=wayland'
+  - '--socket=fallback-x11'
+  - '--device=dri'
+  - '--allow=bluetooth'
+  - '--share=ipc'
+  - '--share=network'
+  - '--socket=pulseaudio'
+  - '--socket=cups'
+  - '--device=dri'
+  - '--filesystem=host'
+  - '--filesystem=/mnt'
 modules:
   - name: xdotool
     buildsystem: simple
     sources:
       - type: git
-        url: https://github.com/jordansissel/xdotool.git
+        url: 'https://github.com/jordansissel/xdotool.git'
     depends: glibc
     build-commands:
       - make
       - make install PREFIX=/app/lib/spacedrive
-
   - shared-modules/dbus-glib/dbus-glib.json
   - name: binary
     buildsystem: simple
     sources:
       - type: file
-        url: https://raw.githubusercontent.com/greendoescode/com.spacedrive.desktop/new-pr/files/97Db046C.deb
-        sha256: 07b050f0c90c3f3808856875fa497faaa1949c9027ced63ae046925318f526f6
-        only-arches: [x86_64]
-
+        path: Spacedrive-linux-x86_64.deb
+        only-arches:
+          - x86_64
+      - type: file
+        path: com.spacedrive.Desktop.metainfo.xml
     build-commands:
       - ar -x *.deb
-      - tar -xf data.tar.xz
-      - mkdir -p /app/bin
+      - tar -xf data.tar.gz
+      - sed -i 's/Icon=sd-desktop/Icon=com.spacedrive.Desktop/' usr/share/applications/spacedrive.desktop
       - mkdir -p /app/lib/spacedrive
-      - mkdir -p /app/share/applications
       - mkdir -p /app/share/doc/spacedrive
-      - mkdir -p /app/share/icons/hicolor/32x32/apps
-      - mkdir -p /app/share/icons/hicolor/128x128/apps
-      - mkdir -p /app/share/icons/hicolor/256x256/apps
-      - mkdir -p /app/share/man/man1/
       - mkdir -p /app/share/spacedrive/models
-      - cp /app/lib/spacedrive/lib/*.so* /app/lib/spacedrive
-      - cp /app/lib/*.so* /app/lib/spacedrive
-      - install -Dm644 usr/lib/spacedrive/* /app/lib/spacedrive
-      - install -Dm755 usr/bin/* /app/bin
-      - install -Dm644 usr/share/man/man1/* /app/share/man/man1/
+      - mkdir -p /app/share/man/man1/
+      - mkdir -p /app/share/doc/spacedrive
+      - mkdir -p /app/bin
+      - mkdir -p /app/share/spacedrive/models
+      - cp -r /app/lib/spacedrive/lib/*.so* /app/lib/spacedrive
+      - cp -r /app/lib/*.so* /app/lib/spacedrive
+      - cp -r usr/lib/spacedrive/* /app/lib/spacedrive
+      - cp -r usr/bin/* /app/bin
+      - cp -r usr/share/man/man1/* /app/share/man/man1/
       - install -Dm644 usr/share/icons/hicolor/128x128/apps/spacedrive.png /app/share/icons/hicolor/128x128/apps/com.spacedrive.Desktop.png
       - install -Dm644 usr/share/icons/hicolor/32x32/apps/spacedrive.png /app/share/icons/hicolor/32x32/apps/com.spacedrive.Desktop.png
       - install -Dm644 usr/share/icons/hicolor/256x256@2/apps/spacedrive.png /app/share/icons/hicolor/256x256/apps/com.spacedrive.Desktop.png
-      - install -Dm644 usr/share/doc/spacedrive/* /app/share/doc/spacedrive
+      - cp -r usr/share/doc/spacedrive/* /app/share/doc/spacedrive
       - install -Dm644 usr/share/applications/spacedrive.desktop /app/share/applications/com.spacedrive.Desktop.desktop
-      - install -Dm644 usr/share/spacedrive/models/* /app/share/spacedrive/models
-      - install -Dm644 usr/com.spacedrive.Desktop.metainfo.xml /app/share/metainfo/com.spacedrive.Desktop.metainfo.xml
+      - cp -r usr/share/spacedrive/models/* /app/share/spacedrive/models
+      - install -Dm644 com.spacedrive.Desktop.metainfo.xml /app/share/metainfo/com.spacedrive.Desktop.metainfo.xml
