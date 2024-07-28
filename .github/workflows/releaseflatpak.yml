@@ -177,7 +177,7 @@ jobs:
           runtime: org.gnome.Platform
           runtime-version: '46'
           sdk: org.gnome.Sdk
-          
+                    
           command: /app/bin/spacedrive
           finish-args:
             - --env=LD_LIBRARY_PATH=/app/lib/spacedrive:/usr/lib
@@ -192,7 +192,7 @@ jobs:
             - --device=dri
             - --filesystem=host
             - --filesystem=/mnt
-          
+                    
           modules:
             - name: xdotool
               buildsystem: simple
@@ -203,22 +203,23 @@ jobs:
               build-commands:
                 - make
                 - make install PREFIX=/app/lib/spacedrive
-          
             - shared-modules/dbus-glib/dbus-glib.json
             - name: binary
               buildsystem: simple
               sources:
                 - type: file
-                  path: ./Spacedrive-linux-x86_64.deb 
+                  path: Spacedrive-linux-x86_64.deb 
                   only-arches: [x86_64]
                 - type: file
-                  path: ./com.spacedrive.Desktop.metainfo.xml
-                  
+                  path: com.spacedrive.Desktop.metainfo.xml
+                            
               build-commands:
                 - ar -x *.deb
-                - tar -xf data.tar.xz
+                - tar -xf data.tar.gz
                 - sed -i 's/Icon=sd-desktop/Icon=com.spacedrive.Desktop/' usr/share/applications/spacedrive.desktop
                 - mkdir -p /app/lib/spacedrive
+                - mkdir -p /app/share/doc/spacedrive
+                - mkdir -p /app/share/spacedrive/models
                 - cp /app/lib/spacedrive/lib/*.so* /app/lib/spacedrive
                 - cp /app/lib/*.so* /app/lib/spacedrive
                 - install -Dm644 usr/lib/spacedrive/* /app/lib/spacedrive
