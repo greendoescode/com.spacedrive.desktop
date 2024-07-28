@@ -87,10 +87,10 @@ jobs:
           ls
           
       - name: Build Flatpak
-        run: flatpak-builder --repo=local ./out ./com.spacedrive.Desktop.yml
+        run: flatpak-builder ./out ./com.spacedrive.Desktop.yml
             
       - name: Build Flatpak Bundle
-        run: flatpak build-bundle local com.spacedrive.Desktop.flatpak com.spacedrive.Desktop
+        run: flatpak build-bundle com.spacedrive.Desktop.flatpak com.spacedrive.Desktop
 
       - name: Upload Flatpak Bundle
         uses: actions/upload-artifact@v3
