@@ -79,18 +79,15 @@ jobs:
         run: |
           df -h
           sudo apt-get update
-          sudo apt-get install -y libgtk-3-dev webkit2gtk-4.0 librsvg2-dev patchelf flatpak flatpak-builder
-          flatpak remote-add --user --if-not-exists flathub https://flathub.org/repo/flathub.flatpakrepo
+          sudo apt-get install -y libc6 libxdo3 dbus libwebkit2gtk-4.1-0 gstreamer1.0-plugins-ugly gstreamer1.0-plugins-bad libgtk-3-0 librsvg2-dev patchelf flatpak flatpak-builder
           flatpak install -y runtime/org.gnome.Platform/x86_64/46 runtime/org.gnome.Sdk/x86_64/46
-          flatpak --version
-          flatpak-builder --version
           ls
           
       - name: Build Flatpak
-        run: flatpak-builder ./out ./com.spacedrive.Desktop.yml
+        run: flatpak-builder --repo=local ./out ./com.spacedrive.Desktop.yml
             
       - name: Build Flatpak Bundle
-        run: flatpak build-bundle com.spacedrive.Desktop.flatpak com.spacedrive.Desktop
+        run: flatpak build-bundle local com.spacedrive.Desktop.flatpak com.spacedrive.Desktop
 
       - name: Upload Flatpak Bundle
         uses: actions/upload-artifact@v3
