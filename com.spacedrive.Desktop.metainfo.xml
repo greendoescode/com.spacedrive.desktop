@@ -28,17 +28,6 @@
 		<content_attribute id="social-info">mild</content_attribute>
 	</content_rating>
 	<releases>
-		<release version="0.4.0" date="2024-07-20">
-			<url type="details">https://www.spacedrive.com/docs/changelog/alpha/0.4.0</url>
-			<description>
-				<p>Release description</p>
-				<ul>
-					<li>Improved file system indexer - by @fogodev in #2476</li>
-					<li>Estimated time remaining on Jobs - by @myung03</li>
-					<li>Device and database sync [Feature Flagged] -  Big team effort 😀</li>
-				</ul>
-			</description>
-		</release>
 		<release version="0.4.1" date="2024-07-27">
 			<url type="details">https://www.spacedrive.com/docs/changelog/alpha/0.4.1</url>
 			<description>
@@ -56,6 +45,17 @@
 					<li>Improved Media View thumbnails by @ameer2468 in #2626</li>
 					<li>Improved the sync settings UI/UX by @ameer2468 in #2636</li>
 					<li>@greendoescode made their first contribution in #2630</li>
+				</ul>
+			</description>
+		</release>		
+		<release version="0.4.0" date="2024-07-20">
+			<url type="details">https://www.spacedrive.com/docs/changelog/alpha/0.4.0</url>
+			<description>
+				<p>Release description</p>
+				<ul>
+					<li>Improved file system indexer - by @fogodev in #2476</li>
+					<li>Estimated time remaining on Jobs - by @myung03</li>
+					<li>Device and database sync [Feature Flagged] -  Big team effort 😀</li>
 				</ul>
 			</description>
 		</release>
