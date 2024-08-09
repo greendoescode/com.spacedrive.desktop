@@ -51,7 +51,7 @@ modules:
     build-commands:
        - ar -x *.deb
        - tar -xf data.tar.gz
-       - sed -i 's/Icon=sd-desktop/Icon=com.spacedrive.Desktop/' usr/share/applications/spacedrive.desktop
+       - sed -i 's/Icon=spacedrive/Icon=com.spacedrive.Desktop/' usr/share/applications/spacedrive.desktop
        - sed -i 's/Exec=sd-desktop/Exec=spacedrive/' usr/share/applications/spacedrive.desktop
        - mkdir -p /app/lib/spacedrive
        - mkdir -p /app/share/doc/spacedrive
