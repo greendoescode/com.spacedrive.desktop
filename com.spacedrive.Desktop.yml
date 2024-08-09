@@ -42,7 +42,7 @@ modules:
     buildsystem: simple
     sources:
       - type: file
-        path: https://github.com/spacedriveapp/spacedrive/releases/download/0.4.1/Spacedrive-linux-x86_64.deb
+        url: https://github.com/spacedriveapp/spacedrive/releases/download/0.4.1/Spacedrive-linux-x86_64.deb
         sha256: 63a1953bc377473fafa0a616601f3ba616e63724c0733aa373e22644cfb9bf6d
         only-arches: [x86_64]
       - type: file
