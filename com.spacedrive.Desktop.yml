@@ -2,17 +2,9 @@ id: com.spacedrive.Desktop
 runtime: org.gnome.Platform
 runtime-version: '46'
 sdk: org.gnome.Sdk
-add-extensions:
-  -  org.freedesktop.Platform.ffmpeg-full:
-      version: '23.08'
-      directory: lib/ffmpeg
-      add-ld-path: "."
-      no-autodownload: false
-      autodelete: false
           
 command: spacedrive
 finish-args:
-  - --env=LD_LIBRARY_PATH=/app/lib/spacedrive:/app/lib/codecs/lib/:/app/lib/
   - --socket=wayland
   - --socket=fallback-x11
   - --device=dri
@@ -24,7 +16,7 @@ finish-args:
   - --device=dri
   - --filesystem=host
   - --filesystem=/mnt
-  - --env=GST_PLUGIN_SYSTEM_PATH=/app/lib/gstreamer-1.0
+
           
 modules:
   - name: xdotool
@@ -37,7 +29,6 @@ modules:
       - make
       - make install PREFIX=/app/lib/spacedrive
   - shared-modules/dbus-glib/dbus-glib.json
-  - gstreamer.yml
   - name: binary
     buildsystem: simple
     sources:
