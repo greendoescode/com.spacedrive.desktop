@@ -2,5 +2,6 @@ deb
 out
 .flatpak-builder
 local
-com.spacedrive.Desktop.flatpak
+com.spacedrive.Spacedrive.flatpak
 .flatpak
+.vscode

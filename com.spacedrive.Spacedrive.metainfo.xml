@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!-- Copyright 2024 Spacedrive Technology Inc -->
 <component type="desktop-application">
-	<id>com.spacedrive.Desktop</id>
+	<id>com.spacedrive.Spacedrive</id>
 	<name>Spacedrive</name>
 	<summary>Spacedrive is an open source cross-platform file explorer, powered by a virtual distributed filesystem written in Rust. </summary>
 	<metadata_license>CC0-1.0</metadata_license>
@@ -13,7 +13,7 @@
 		<p>Organize files across many devices in one place. From cloud services to offline hard drives, Spacedrive combines the storage capacity and processing power of your devices into one personal distributed cloud, that is both secure and intuitive to use.</p>
 		<p>For independent creatives, hoarders, and those that want to own their digital footprint, Spacedrive provides a free file management experience like no other.</p>
 	</description>
-	<launchable type="desktop-id">com.spacedrive.Desktop.desktop</launchable>
+	<launchable type="desktop-id">com.spacedrive.Spacedrive.desktop</launchable>
 	<icon type="remote">https://github.com/spacedriveapp/spacedrive/raw/main/packages/assets/images/AppLogo.png</icon>
 	<url type="bugtracker">https://github.com/spacedriveapp/spacedrive/issues</url>
 	<url type="homepage">https://spacedrive.com/</url>

@@ -1,4 +1,4 @@
-id: com.spacedrive.Desktop
+id: com.spacedrive.Spacedrive
 runtime: org.gnome.Platform
 runtime-version: '46'
 sdk: org.gnome.Sdk
@@ -37,12 +37,12 @@ modules:
         sha256: 63a1953bc377473fafa0a616601f3ba616e63724c0733aa373e22644cfb9bf6d
         only-arches: [x86_64]
       - type: file
-        path: com.spacedrive.Desktop.metainfo.xml
+        path: com.spacedrive.Spacedrive.metainfo.xml
                   
     build-commands:
        - ar -x *.deb
        - tar -xf data.tar.gz
-       - sed -i 's/Icon=spacedrive/Icon=com.spacedrive.Desktop/' usr/share/applications/spacedrive.desktop
+       - sed -i 's/Icon=spacedrive/Icon=com.spacedrive.Spacedrive/' usr/share/applications/spacedrive.desktop
        - sed -i 's/Exec=sd-desktop/Exec=spacedrive/' usr/share/applications/spacedrive.desktop
        - mkdir -p /app/lib/spacedrive
        - mkdir -p /app/share/doc/spacedrive
@@ -56,10 +56,10 @@ modules:
        - cp -r usr/lib/spacedrive/* /app/lib/spacedrive
        - cp -r usr/bin/* /app/bin
        - cp -r usr/share/man/man1/* /app/share/man/man1/
-       - install -Dm644 usr/share/icons/hicolor/128x128/apps/spacedrive.png /app/share/icons/hicolor/128x128/apps/com.spacedrive.Desktop.png
-       - install -Dm644 usr/share/icons/hicolor/32x32/apps/spacedrive.png /app/share/icons/hicolor/32x32/apps/com.spacedrive.Desktop.png
-       - install -Dm644 usr/share/icons/hicolor/256x256@2/apps/spacedrive.png /app/share/icons/hicolor/256x256/apps/com.spacedrive.Desktop.png
+       - install -Dm644 usr/share/icons/hicolor/128x128/apps/spacedrive.png /app/share/icons/hicolor/128x128/apps/com.spacedrive.Spacedrive.png
+       - install -Dm644 usr/share/icons/hicolor/32x32/apps/spacedrive.png /app/share/icons/hicolor/32x32/apps/com.spacedrive.Spacedrive.png
+       - install -Dm644 usr/share/icons/hicolor/256x256@2/apps/spacedrive.png /app/share/icons/hicolor/256x256/apps/com.spacedrive.Spacedrive.png
        - cp -r usr/share/doc/spacedrive/* /app/share/doc/spacedrive
-       - install -Dm644 usr/share/applications/spacedrive.desktop /app/share/applications/com.spacedrive.Desktop.desktop
+       - install -Dm644 usr/share/applications/spacedrive.desktop /app/share/applications/com.spacedrive.Spacedrive.desktop
        - cp -r usr/share/spacedrive/models/* /app/share/spacedrive/models
-       - install -Dm644 com.spacedrive.Desktop.metainfo.xml /app/share/metainfo/com.spacedrive.Desktop.metainfo.xml
+       - install -Dm644 com.spacedrive.Spacedrive.metainfo.xml /app/share/metainfo/com.spacedrive.Spacedrive.metainfo.xml
